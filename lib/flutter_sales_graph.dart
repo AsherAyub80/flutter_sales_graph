@@ -1,7 +1,8 @@
 library flutter_sales_graph;
 
+import 'package:flutter/material.dart';
 
-class MonthlySalesGraph extends StatelessWidget {
+class FlutterSalesGraph extends StatefulWidget {
   final List<double> salesData;
   final List<String> labels;
   final String selectedRange;
@@ -10,8 +11,8 @@ class MonthlySalesGraph extends StatelessWidget {
   final List<Color> colors;
   final double dateLineHeight;
 
-  const MonthlySalesGraph({
-    Key? key,
+  const FlutterSalesGraph({
+    super.key,
     required this.salesData,
     required this.labels,
     required this.selectedRange,
@@ -32,15 +33,24 @@ class MonthlySalesGraph extends StatelessWidget {
       Colors.pink,
     ],
     this.dateLineHeight = 20.0,
-  }) : super(key: key);
+  });
+
+  @override
+  _FlutterSalesGraphState createState() => _FlutterSalesGraphState();
+}
+
+class _FlutterSalesGraphState extends State<FlutterSalesGraph> {
+  int? _pressedIndex;
 
   @override
   Widget build(BuildContext context) {
-    if (salesData.isEmpty || labels.isEmpty || salesData.length != labels.length) {
+    if (widget.salesData.isEmpty ||
+        widget.labels.isEmpty ||
+        widget.salesData.length != widget.labels.length) {
       return Center(child: Text('No data available or labels mismatch.'));
     }
 
-    final double maxSales = salesData.reduce((a, b) => a > b ? a : b);
+    final double maxSales = widget.salesData.reduce((a, b) => a > b ? a : b);
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -48,7 +58,7 @@ class MonthlySalesGraph extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Sales Data (${selectedRange})',
+            'Sales Data (${widget.selectedRange})',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           SizedBox(height: 16),
@@ -62,7 +72,7 @@ class MonthlySalesGraph extends StatelessWidget {
                     .map((range) {
                   return ChoiceChip(
                     label: Text(range),
-                    selected: selectedRange == range,
+                    selected: widget.selectedRange == range,
                     onSelected: (selected) {
                       // Implement logic to handle range change if needed
                     },
@@ -82,77 +92,66 @@ class MonthlySalesGraph extends StatelessWidget {
                 builder: (context, constraints) {
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
-                    children: List.generate(salesData.length, (index) {
-                      final sales = salesData[index];
-                      final label = labels[index];
-                      final barHeight = maxSales > 0 ? (sales / maxSales) * maxBarHeight : 2.0;
-                      final color = colors[index % colors.length];
+                    children: List.generate(widget.salesData.length, (index) {
+                      final sales = widget.salesData[index];
+                      final label = widget.labels[index];
+                      final barHeight = maxSales > 0
+                          ? (sales / maxSales) * widget.maxBarHeight
+                          : 2.0;
+                      final color = widget.colors[index % widget.colors.length];
 
-                      return Container(
-                        width: barWidth,
-                        margin: EdgeInsets.symmetric(horizontal: 4.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Stack(
-                              clipBehavior: Clip.none,
-                              alignment: Alignment.bottomCenter,
-                              children: [
-                                Container(
-                                  width: barWidth,
-                                  height: barHeight.toDouble(),
-                                  decoration: BoxDecoration(
-                                    color: color,
-                                    borderRadius: BorderRadius.circular(4.0),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        spreadRadius: 2,
-                                        blurRadius: 4,
-                                        offset: Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
+                      return GestureDetector(
+                        onLongPress: () {
+                          setState(() {
+                            _pressedIndex = index;
+                          });
+                        },
+                        onLongPressEnd: (_) {
+                          setState(() {
+                            _pressedIndex = null;
+                          });
+                        },
+                        child: Container(
+                          width: widget.barWidth,
+                          margin: EdgeInsets.symmetric(horizontal: 4.0),
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            alignment: Alignment.bottomCenter,
+                            children: [
+                              Container(
+                                width: widget.barWidth,
+                                height: barHeight.toDouble(),
+                                decoration: BoxDecoration(
+                                  color: color,
+                                  borderRadius: BorderRadius.circular(4.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.3),
+                                      spreadRadius: 2,
+                                      blurRadius: 4,
+                                      offset: Offset(0, 2),
+                                    ),
+                                  ],
                                 ),
-                                if (sales > 0)
-                                  Positioned(
-                                    bottom: barHeight / 2 - 10,
-                                    child: Container(
-                                      width: barWidth + 20,
-                                      alignment: Alignment.center,
-                                      child: Transform.rotate(
-                                        angle: -1.5708,
-                                        child: FittedBox(
-                                          fit: BoxFit.scaleDown,
-                                          child: Text(
-                                            '\$${barHeight >= 50 ? sales.toStringAsFixed(2) : sales.toStringAsFixed(0)}',
-                                            style: TextStyle(
-                                              fontSize: barHeight <= 50 ? barHeight / 2 : 10,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
+                              ),
+                              if (_pressedIndex == index)
+                                Positioned(
+                                  bottom: barHeight + 10, // Adjust as needed
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 8.0, vertical: 4.0),
+                                    color: Colors.black87,
+                                    child: Text(
+                                      '\$${sales.toStringAsFixed(2)}',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
-                              ],
-                            ),
-                            SizedBox(height: 4),
-                            Container(
-                              width: barWidth,
-                              height: dateLineHeight,
-                              alignment: Alignment.center,
-                              child: Text(
-                                label,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
                                 ),
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     }),

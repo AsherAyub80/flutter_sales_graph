@@ -1,9 +1,10 @@
+import 'package:flutter_sales_graph/flutter_sales_graph.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sales_graph/flutter_sales_graph.dart'; // Adjust the import to your package
 
 void main() {
-  testWidgets('MonthlySalesGraph displays sales data correctly', (WidgetTester tester) async {
+  testWidgets('MonthlySalesGraph displays sales data correctly',
+      (WidgetTester tester) async {
     // Define test data
     final salesData = [100.0, 200.0, 300.0];
     final labels = ['Jan', 'Feb', 'Mar'];
@@ -13,7 +14,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: MonthlySalesGraph(
+          body: FlutterSalesGraph(
             salesData: salesData,
             labels: labels,
             selectedRange: selectedRange,
@@ -27,7 +28,8 @@ void main() {
 
     // Check if there are the correct number of bars (Containers)
     expect(find.byType(Container), findsWidgets);
-    expect(find.byType(Container).evaluate().length, salesData.length * 2); // Bars and labels
+    expect(find.byType(Container).evaluate().length,
+        salesData.length * 2); // Bars and labels
 
     // Optionally, check specific text or bar heights
     for (var label in labels) {
@@ -36,18 +38,21 @@ void main() {
 
     // Check if bars are displayed
     for (var sales in salesData) {
-      expect(find.byWidgetPredicate(
-        (widget) => widget is Container && widget.color == Colors.blue,
-      ), findsOneWidget); // Adjust color based on the actual widget colors
+      expect(
+          find.byWidgetPredicate(
+            (widget) => widget is Container && widget.color == Colors.blue,
+          ),
+          findsOneWidget); // Adjust color based on the actual widget colors
     }
   });
 
-  testWidgets('MonthlySalesGraph handles empty data gracefully', (WidgetTester tester) async {
+  testWidgets('MonthlySalesGraph handles empty data gracefully',
+      (WidgetTester tester) async {
     // Build the widget tree with empty data
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: MonthlySalesGraph(
+          body: FlutterSalesGraph(
             salesData: [],
             labels: [],
             selectedRange: 'No Data',
