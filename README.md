@@ -23,7 +23,7 @@ To use the `flutter_sales_graph` package in your Flutter project, follow these s
 
 ## Usage
 
-Here’s a basic example of how to use the `MonthlySalesGraph` widget in your Flutter app:
+Here’s a basic example of how to use the `FlutterSalesGraph` widget in your Flutter app:
 
 1. **Import the package:**
 
@@ -31,37 +31,37 @@ Here’s a basic example of how to use the `MonthlySalesGraph` widget in your Fl
     import 'package:flutter_sales_graph/flutter_sales_graph.dart';
     ```
 
-2. **Use the `MonthlySalesGraph` widget:**
+2. **Use the `FlutterSalesGraph` widget:**
 
     ```dart
-    import 'package:flutter/material.dart';
+     import 'package:flutter/material.dart';
     import 'package:flutter_sales_graph/flutter_sales_graph.dart';
 
-    void main() {
-      runApp(MyApp());
-    }
-
-    class MyApp extends StatelessWidget {
-      @override
-      Widget build(BuildContext context) {
-        return MaterialApp(
-          home: Scaffold(
-            appBar: AppBar(title: Text('Sales Graph Example')),
-            body: Center(
-              child: MonthlySalesGraph(
-                salesData: [100, 200, 150, 300, 250, 350],
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                selectedRange: 'Last 6 Months',
-                maxBarHeight: 250.0,
-                barWidth: 30.0,
-                colors: [Colors.blue, Colors.green, Colors.red, Colors.orange, Colors.purple, Colors.teal],
-                dateLineHeight: 30.0,
-              ),
-            ),
-          ),
-        );
+   void main() {
+  runApp(MyApp());
       }
-    }
+
+   class MyApp extends StatelessWidget {
+      @override
+    Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: Text('Sales Graph Example')),
+        body: Center(
+          child: FlutterSalesGraph(
+            salesData: [100, 200, 150, 300, 250, 350],
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            maxBarHeight: 250.0,
+            barWidth: 30.0,
+            colors: [Colors.blue, Colors.green, Colors.red],
+            dateLineHeight: 20.0,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
     ```
 
 ## Parameters
