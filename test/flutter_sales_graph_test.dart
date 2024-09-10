@@ -8,7 +8,6 @@ void main() {
     // Define test data
     final salesData = [100.0, 200.0, 300.0];
     final labels = ['Jan', 'Feb', 'Mar'];
-    final selectedRange = 'Last 3 Months';
 
     // Build the widget tree
     await tester.pumpWidget(
@@ -17,7 +16,6 @@ void main() {
           body: FlutterSalesGraph(
             salesData: salesData,
             labels: labels,
-            selectedRange: selectedRange,
           ),
         ),
       ),
@@ -55,7 +53,6 @@ void main() {
           body: FlutterSalesGraph(
             salesData: [],
             labels: [],
-            selectedRange: 'No Data',
           ),
         ),
       ),

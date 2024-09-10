@@ -1,21 +1,17 @@
-library flutter_sales_graph;
-
 import 'package:flutter/material.dart';
 
-class FlutterSalesGraph extends StatefulWidget {
+class FlutterSalesGraph extends StatelessWidget {
   final List<double> salesData;
   final List<String> labels;
-  final String selectedRange;
   final double maxBarHeight;
   final double barWidth;
   final List<Color> colors;
   final double dateLineHeight;
 
   const FlutterSalesGraph({
-    super.key,
+    Key? key,
     required this.salesData,
     required this.labels,
-    required this.selectedRange,
     this.maxBarHeight = 200.0,
     this.barWidth = 24.0,
     this.colors = const [
@@ -33,130 +29,102 @@ class FlutterSalesGraph extends StatefulWidget {
       Colors.pink,
     ],
     this.dateLineHeight = 20.0,
-  });
-
-  @override
-  _FlutterSalesGraphState createState() => _FlutterSalesGraphState();
-}
-
-class _FlutterSalesGraphState extends State<FlutterSalesGraph> {
-  int? _pressedIndex;
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (widget.salesData.isEmpty ||
-        widget.labels.isEmpty ||
-        widget.salesData.length != widget.labels.length) {
+    if (salesData.isEmpty ||
+        labels.isEmpty ||
+        salesData.length != labels.length) {
       return Center(child: Text('No data available or labels mismatch.'));
     }
 
-    final double maxSales = widget.salesData.reduce((a, b) => a > b ? a : b);
+    final double maxSales = salesData.reduce((a, b) => a > b ? a : b);
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Sales Data (${widget.selectedRange})',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-          ),
-          SizedBox(height: 16),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SizedBox(
-              width: 400,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: ['Last 7 Days', 'Last 30 Days', 'Last 12 Months']
-                    .map((range) {
-                  return ChoiceChip(
-                    label: Text(range),
-                    selected: widget.selectedRange == range,
-                    onSelected: (selected) {
-                      // Implement logic to handle range change if needed
-                    },
-                  );
-                }).toList(),
-              ),
-            ),
-          ),
-          SizedBox(height: 16),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: double.infinity,
-              ),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: List.generate(widget.salesData.length, (index) {
-                      final sales = widget.salesData[index];
-                      final label = widget.labels[index];
-                      final barHeight = maxSales > 0
-                          ? (sales / maxSales) * widget.maxBarHeight
-                          : 2.0;
-                      final color = widget.colors[index % widget.colors.length];
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: double.infinity,
+                ),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: List.generate(salesData.length, (index) {
+                        final sales = salesData[index];
+                        final label = labels[index];
+                        final barHeight = maxSales > 0
+                            ? (sales / maxSales) * maxBarHeight
+                            : 2.0;
+                        final color = colors[index % colors.length];
 
-                      return GestureDetector(
-                        onLongPress: () {
-                          setState(() {
-                            _pressedIndex = index;
-                          });
-                        },
-                        onLongPressEnd: (_) {
-                          setState(() {
-                            _pressedIndex = null;
-                          });
-                        },
-                        child: Container(
-                          width: widget.barWidth,
-                          margin: EdgeInsets.symmetric(horizontal: 4.0),
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            alignment: Alignment.bottomCenter,
-                            children: [
-                              Container(
-                                width: widget.barWidth,
-                                height: barHeight.toDouble(),
-                                decoration: BoxDecoration(
-                                  color: color,
-                                  borderRadius: BorderRadius.circular(4.0),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.3),
-                                      spreadRadius: 2,
-                                      blurRadius: 4,
-                                      offset: Offset(0, 2),
+                        return GestureDetector(
+                          onLongPress: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'Sales: \$${sales.toStringAsFixed(2)}'),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: barWidth,
+                            margin: EdgeInsets.symmetric(horizontal: 4.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Stack(
+                                  clipBehavior: Clip.none,
+                                  alignment: Alignment.bottomCenter,
+                                  children: [
+                                    Container(
+                                      width: barWidth,
+                                      height: barHeight.toDouble(),
+                                      decoration: BoxDecoration(
+                                        color: color,
+                                        borderRadius:
+                                            BorderRadius.circular(4.0),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.3),
+                                            spreadRadius: 2,
+                                            blurRadius: 4,
+                                            offset: Offset(0, 2),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
-                              ),
-                              if (_pressedIndex == index)
-                                Positioned(
-                                  bottom: barHeight + 10, // Adjust as needed
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 8.0, vertical: 4.0),
-                                    color: Colors.black87,
-                                    child: Text(
-                                      '\$${sales.toStringAsFixed(2)}',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                SizedBox(height: 4),
+                                Container(
+                                  width: barWidth,
+                                  height: dateLineHeight,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    label,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    }),
-                  );
-                },
+                        );
+                      }),
+                    );
+                  },
+                ),
               ),
             ),
           ),
