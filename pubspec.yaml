@@ -1,6 +1,6 @@
 name: flutter_sales_graph
 description: "A Flutter package for displaying sales data in a bar chart format."
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/AsherAyub80/flutter_sales_graph
 
 environment:
