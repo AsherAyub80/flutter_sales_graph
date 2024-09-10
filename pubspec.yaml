@@ -19,8 +19,8 @@ dev_dependencies:
 flutter:
 
   # Ensure to add your package's assets or fonts if needed.
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/Screenshot 2024-09-10 103435.png
   #   - images/a_dot_ham.jpeg
   #
   # fonts:
