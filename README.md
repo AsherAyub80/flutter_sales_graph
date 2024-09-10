@@ -8,6 +8,15 @@ A Flutter package for displaying customizable bar charts for sales data.
 - Supports different time ranges (e.g., Last 7 Days, Last 30 Days, Last 12 Months).
 - Customizable parameters for bar height, width, colors, and labels.
 
+## Platforms Supported
+
+- **Android**: Yes
+- **iOS**: Yes
+- **Web**: Yes
+- **Windows**: Yes
+- **macOS**: Yes
+- **Linux**: Yes
+
 ## Installation
 
 To use the `flutter_sales_graph` package in your Flutter project, follow these steps:
