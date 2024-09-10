@@ -95,11 +95,11 @@ For a full example of how to use this package, see the [example](example/) direc
 If you’d like to contribute to this package, please follow these guidelines:
 
 1. **Fork the repository:**
-   - Click the "Fork" button on the top-right corner of this page.
+   - Click the "Fork" button on the top-right corner of github page.
 
 2. **Clone your fork:**
    ```bash
-   git clone https://github.com/your-username/flutter_sales_graph.git
+   git clone https://github.com/AsherAyub80/flutter_sales_graph.git
 
 3. **Create a branch for your changes:**
    ```bash
