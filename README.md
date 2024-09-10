@@ -16,9 +16,6 @@ A Flutter package for displaying customizable bar charts for sales data.
 - **Windows**: Yes
 - **macOS**: Yes
 - **Linux**: Yes
-## Screenshot
-
-<img width="695" alt="Screenshot 2024-09-10 103435" src="https://github.com/user-attachments/assets/3220f268-d8c5-4ca3-acee-419946a52da5">
 
 ## Installation
 
