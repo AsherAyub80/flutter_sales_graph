@@ -28,7 +28,7 @@ To use the `flutter_sales_graph` package in your Flutter project, follow these s
 
     ```yaml
     dependencies:
-      flutter_sales_graph: ^0.0.4
+      flutter_sales_graph: ^0.0.5
     ```
 
 2. Run `flutter pub get` to install the package.
