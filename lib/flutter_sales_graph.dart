@@ -1,17 +1,34 @@
 import 'package:flutter/material.dart';
 
+/// A customizable sales bar chart widget for visualizing numeric sales data.
 class FlutterSalesGraph extends StatefulWidget {
+  /// The sales values represented by each bar in the chart.
   final List<double> salesData;
+
+  /// The text labels shown below each corresponding bar.
   final List<String> labels;
+
+  /// A selected range label (for example, "Last 7 Days") for external usage.
+  final String? selectedRange;
+
+  /// The maximum height used to scale bars relative to the largest sales value.
   final double maxBarHeight;
+
+  /// The fixed width of each individual bar.
   final double barWidth;
+
+  /// The palette used to color bars in order, cycling when needed.
   final List<Color> colors;
+
+  /// The height allocated for the label line below each bar.
   final double dateLineHeight;
 
+  /// Creates a [FlutterSalesGraph] with required sales values and labels.
   const FlutterSalesGraph({
     super.key,
     required this.salesData,
     required this.labels,
+    this.selectedRange,
     this.maxBarHeight = 200.0,
     this.barWidth = 24.0,
     this.colors = const [
