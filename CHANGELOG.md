@@ -5,5 +5,8 @@
 ```markdown
 # Changelog
 
-## [0.0.1] - 2024-09-10
-- Initial release of `flutter_sales_graph`.
+## 0.0.2
+* Added documentation comments to public APIs.
+* Added standalone example application.
+* Fixed repository links and static analysis lints.
+
